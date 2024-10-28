@@ -8,13 +8,10 @@ import {
   Tent,
   Award,
   Swords,
-  Map,
-  Flag,
   Scroll,
   Mountain,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 
 // Define the TribalLeader type
 interface TribalLeader {
