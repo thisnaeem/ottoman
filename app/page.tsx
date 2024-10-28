@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, } from "react";
+import { useState } from "react";
 import { Search, LayoutGrid, GitBranch, Info } from "lucide-react";
-import { SULTANS } from "@/data/sultans";
+import { Interregnum, INTERREGNUM_PERIODS, SULTANS } from "@/data/sultans";
 import { TRIBAL_LEADERS, PERIODS } from "@/data/leaders";
 import LeaderCard from "@/components/LeaderCard";
 import { SultanCard } from "@/components/SultanCard";
 import { Timeline } from "@/components/Timeline";
-import { cn } from "@/lib/utils"; // Add this import
+import { cn } from "@/lib/utils";
 import {
   Select,
   SelectContent,
@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { InterregnumCard } from "@/components/InterregnumCard";
+
 
 export default function Home() {
   const [view, setView] = useState<"cards" | "timeline">("cards");
@@ -33,30 +35,56 @@ export default function Home() {
     totalTerritories: "45",
   };
 
-  // Filter function for both types
-  const getFilteredItems = () => {
-    const filterCondition = (item: any) => {
-      const matchesSearch =
-        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.period.toLowerCase().includes(searchTerm.toLowerCase());
+const getFilteredItems = () => {
+  const filterCondition = (item: any) => {
+    const matchesSearch =
+      (item.name || item.title)
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      (item.title || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (item.period || "").toLowerCase().includes(searchTerm.toLowerCase());
 
-      const matchesPeriod =
-        selectedPeriod === "all" || item.periodId === selectedPeriod;
+    const matchesPeriod =
+      selectedPeriod === "all" || item.periodId === selectedPeriod;
 
-      return matchesSearch && matchesPeriod;
-    };
-
-    const filteredTribalLeaders =
-      selectedPeriod === "kayi" || selectedPeriod === "all"
-        ? TRIBAL_LEADERS.filter(filterCondition)
-        : [];
-
-    const filteredSultans =
-      selectedPeriod === "kayi" ? [] : SULTANS.filter(filterCondition);
-
-    return [...filteredTribalLeaders, ...filteredSultans];
+    return matchesSearch && matchesPeriod;
   };
+
+  const filteredTribalLeaders =
+    selectedPeriod === "kayi" || selectedPeriod === "all"
+      ? TRIBAL_LEADERS.filter(filterCondition)
+      : [];
+
+  const filteredSultans =
+    selectedPeriod === "kayi" ? [] : SULTANS.filter(filterCondition);
+
+  const filteredInterregnums = INTERREGNUM_PERIODS.filter(filterCondition);
+
+  return [
+  ...filteredTribalLeaders,
+  ...filteredSultans,
+  ...filteredInterregnums,
+].sort((a, b) => {
+  // For item a
+  const yearA = 
+    ('type' in a && a.type === 'interregnum') 
+      ? a.startYear 
+      : ('reign' in a) 
+        ? parseInt(a.reign.split('-')[0]) 
+        : 0;
+
+  // For item b
+  const yearB = 
+    ('type' in b && b.type === 'interregnum') 
+      ? b.startYear 
+      : ('reign' in b) 
+        ? parseInt(b.reign.split('-')[0]) 
+        : 0;
+
+  return yearA - yearB;
+});
+
+};
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
@@ -128,13 +156,13 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex flex-col  sm:flex-row gap-4 w-full md:w-auto">
+          <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
             <div className="relative flex-grow">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
                 placeholder="Search by name, title, or period..."
-                className="w-full h-11 pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent bg-white"
+                className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent bg-white"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -188,27 +216,42 @@ export default function Home() {
           <Timeline />
         ) : (
           <div className="grid grid-cols-1 gap-6">
-            {getFilteredItems().map((item) =>
-              item.id.toString().startsWith("TL") ? (
-                <LeaderCard
-                  key={item.id}
-                  leader={item as any}
-                  isExpanded={expandedItem === item.id}
-                  onToggle={() =>
-                    setExpandedItem(expandedItem === item.id ? null : item.id)
-                  }
-                />
-              ) : (
-                <SultanCard
-                  key={item.id}
-                  sultan={item as any}
-                  isExpanded={expandedItem === item.id}
-                  onToggle={() =>
-                    setExpandedItem(expandedItem === item.id ? null : item.id)
-                  }
-                />
-              )
-            )}
+            {getFilteredItems().map((item) => {
+              if (item.type === "interregnum") {
+                return (
+                  <InterregnumCard
+                    key={item.id}
+                    period={item as Interregnum}
+                    isExpanded={expandedItem === item.id}
+                    onToggle={() =>
+                      setExpandedItem(expandedItem === item.id ? null : item.id)
+                    }
+                  />
+                );
+              } else if (item.id.toString().startsWith("TL")) {
+                return (
+                  <LeaderCard
+                    key={item.id}
+                    leader={item as any}
+                    isExpanded={expandedItem === item.id}
+                    onToggle={() =>
+                      setExpandedItem(expandedItem === item.id ? null : item.id)
+                    }
+                  />
+                );
+              } else {
+                return (
+                  <SultanCard
+                    key={item.id}
+                    sultan={item as any}
+                    isExpanded={expandedItem === item.id}
+                    onToggle={() =>
+                      setExpandedItem(expandedItem === item.id ? null : item.id)
+                    }
+                  />
+                );
+              }
+            })}
           </div>
         )}
 
@@ -222,8 +265,8 @@ export default function Home() {
               No results found
             </h3>
             <p className="text-gray-600">
-              Try adjusting your search or filter to find what you&apos;re
-              looking for.
+              Try adjusting your search or filter to find what you're looking
+              for.
             </p>
           </div>
         )}

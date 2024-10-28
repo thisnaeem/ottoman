@@ -10,6 +10,79 @@ export const PERIODS = [
   { id: 'decline', name: 'Decline (1757-1876)' },
   { id: 'late', name: 'Late Period (1876-1922)' }
 ];
+// data/sultans.ts
+
+// Add a new type for interregnum periods
+export interface Interregnum {
+  id: string;
+  type: 'interregnum';
+  startYear: number;
+  endYear: number;
+  title: string;
+  description: string;
+  keyEvents: Array<{
+    year: string;
+    event: string;
+  }>;
+  contestants: Array<{
+    name: string;
+    claim: string;
+    territory: string;
+    outcome: string;
+  }>;
+}
+
+// Add the interregnum period data
+export const INTERREGNUM_PERIODS = [
+  {
+    id: 'ottoman-interregnum',
+    type: 'interregnum',
+    startYear: 1402,
+    endYear: 1413,
+    title: "Ottoman Interregnum (Civil War)",
+    description: "Period of civil war between the sons of Bayezid I following the defeat at the Battle of Ankara",
+    keyEvents: [
+      {
+        year: "1402",
+        event: "Battle of Ankara - Bayezid I's defeat by Timur"
+      },
+      {
+        year: "1403-1413",
+        event: "Civil war between Bayezid's sons: İsa Çelebi, Mehmed Çelebi, Musa Çelebi, and Süleyman Çelebi"
+      },
+      {
+        year: "1413",
+        event: "Mehmed Çelebi's victory and restoration of Ottoman unity"
+      }
+    ],
+    contestants: [
+      {
+        name: "Süleyman Çelebi",
+        claim: "Eldest surviving son, controlled Rumelia",
+        territory: "European territories (Rumelia)",
+        outcome: "Defeated and killed by Musa in 1411"
+      },
+      {
+        name: "İsa Çelebi",
+        claim: "Controlled western Anatolia",
+        territory: "Bursa and surroundings",
+        outcome: "Defeated by Mehmed in 1406"
+      },
+      {
+        name: "Mehmed Çelebi",
+        claim: "Controlled northern Anatolia",
+        territory: "Amasya and central Anatolia",
+        outcome: "Victory, became Mehmed I"
+      },
+      {
+        name: "Musa Çelebi",
+        claim: "Controlled parts of Rumelia",
+        territory: "Later controlled Rumelia",
+        outcome: "Defeated by Mehmed in 1413"
+      }
+    ]
+  }
+];
 
 export const SULTANS = [
   {
@@ -165,7 +238,7 @@ export const SULTANS = [
     "name": "Bayezid II",
     "reign": "1481-1512",
     "title": "The Just",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/Bayezid2.jpg",
     "period": "Consolidation of Ottoman Empire",
     "periodId": "consolidation",
     "achievements": [
@@ -186,7 +259,7 @@ export const SULTANS = [
     "name": "Selim I",
     "reign": "1512-1520",
     "title": "The Grim",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/selim1.jpg",
     "period": "Expansion of Ottoman Empire",
     "periodId": "expansion",
     "achievements": [
@@ -207,7 +280,7 @@ export const SULTANS = [
     "name": "Suleiman the Magnificent",
     "reign": "1520-1566",
     "title": "The Lawgiver",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/suleimanmag.jpg",
     "period": "Golden Age of Ottoman Empire",
     "periodId": "golden-age",
     "achievements": [
@@ -228,7 +301,7 @@ export const SULTANS = [
     "name": "Selim II",
     "reign": "1566-1574",
     "title": "Selim the Sot",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/selim2.jpg",
     "period": "Decline of Ottoman Empire",
     "periodId": "decline",
     "achievements": [
@@ -249,7 +322,7 @@ export const SULTANS = [
     "name": "Murad III",
     "reign": "1574-1595",
     "title": "The Luxurious Sultan",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/murad3.jpg",
     "period": "Decline of Ottoman Empire",
     "periodId": "decline",
     "achievements": [
@@ -270,7 +343,7 @@ export const SULTANS = [
     "name": "Mehmed III",
     "reign": "1595-1603",
     "title": "The Cautious Sultan",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/mehmed3.jpg",
     "period": "Decline of Ottoman Empire",
     "periodId": "decline",
     "achievements": [
@@ -291,7 +364,7 @@ export const SULTANS = [
     "name": "Ahmed I",
     "reign": "1603-1617",
     "title": "The Builder of the Blue Mosque",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/ahmed1.jpg",
     "period": "Decline of Ottoman Empire",
     "periodId": "decline",
     "achievements": [
@@ -311,7 +384,7 @@ export const SULTANS = [
     "name": "Mustafa I",
     "reign": "1617-1618, 1622-1623",
     "title": "The Mad Sultan",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/mustafa1.jpg",
     "period": "Decline of Ottoman Empire",
     "periodId": "decline",
     "achievements": [
@@ -331,7 +404,7 @@ export const SULTANS = [
     "name": "Osman II",
     "reign": "1618-1622",
     "title": "The Young Sultan",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/osman2.jpg",
     "period": "Decline of Ottoman Empire",
     "periodId": "decline",
     "achievements": [
@@ -352,7 +425,7 @@ export const SULTANS = [
     "name": "Murad IV",
     "reign": "1623-1640",
     "title": "The Restorer",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/murad4.jpg",
     "period": "Decline of Ottoman Empire",
     "periodId": "decline",
     "achievements": [
@@ -373,7 +446,7 @@ export const SULTANS = [
     "name": "Ibrahim I",
     "reign": "1640-1648",
     "title": "The Mad",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/ibrahim1.jpg",
     "period": "Decline of Ottoman Empire",
     "periodId": "decline",
     "achievements": [
@@ -393,7 +466,7 @@ export const SULTANS = [
     "name": "Mehmed IV",
     "reign": "1648-1687",
     "title": "The Hunter",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/mehmed4.jpg",
     "period": "Stagnation of Ottoman Empire",
     "periodId": "stagnation",
     "achievements": [
@@ -414,7 +487,7 @@ export const SULTANS = [
     "name": "Suleiman II",
     "reign": "1687-1691",
     "title": "The Inactive Sultan",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/suleiman2.jpg",
     "period": "Stagnation of Ottoman Empire",
     "periodId": "stagnation",
     "achievements": [
@@ -434,7 +507,7 @@ export const SULTANS = [
     "name": "Ahmed II",
     "reign": "1691-1695",
     "title": "The Short-Lived Sultan",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/ahmed2.jpg",
     "period": "Stagnation of Ottoman Empire",
     "periodId": "stagnation",
     "achievements": [
@@ -454,7 +527,7 @@ export const SULTANS = [
     "name": "Mustafa II",
     "reign": "1695-1703",
     "title": "The Military Sultan",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/mustafa2.jpg",
     "period": "Stagnation of Ottoman Empire",
     "periodId": "stagnation",
     "achievements": [
@@ -474,7 +547,7 @@ export const SULTANS = [
     "name": "Ahmed III",
     "reign": "1703-1730",
     "title": "The Tulip Sultan",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/ahmed3.jpg",
     "period": "Tulip Era of Ottoman Empire",
     "periodId": "tulip-era",
     "achievements": [
@@ -495,7 +568,7 @@ export const SULTANS = [
     "name": "Mahmud I",
     "reign": "1730-1754",
     "title": "The Rebuilder",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/mahmud1.jpg",
     "period": "Period of Ottoman Reforms",
     "periodId": "reforms",
     "achievements": [
@@ -516,7 +589,7 @@ export const SULTANS = [
     "name": "Osman III",
     "reign": "1754-1757",
     "title": "The Reclusive Sultan",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/osman3.jpg",
     "period": "Period of Ottoman Reforms",
     "periodId": "reforms",
     "achievements": [
@@ -536,7 +609,7 @@ export const SULTANS = [
     "name": "Mustafa III",
     "reign": "1757-1774",
     "title": "The Enlightened Sultan",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/mustafa3.jpg",
     "period": "Period of Ottoman Reforms",
     "periodId": "reforms",
     "achievements": [
@@ -557,7 +630,7 @@ export const SULTANS = [
     "name": "Abdul Hamid I",
     "reign": "1774-1789",
     "title": "The Cautious Reformer",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/abdulhamid1.jpg",
     "period": "Decline of Ottoman Empire",
     "periodId": "decline",
     "achievements": [
@@ -578,7 +651,7 @@ export const SULTANS = [
     "name": "Selim III",
     "reign": "1789-1807",
     "title": "The Reformer",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/selim3.jpg",
     "period": "Decline of Ottoman Empire",
     "periodId": "decline",
     "achievements": [
@@ -599,7 +672,7 @@ export const SULTANS = [
     "name": "Mahmud II",
     "reign": "1808-1839",
     "title": "The Reformer Sultan",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/mahmud2.jpg",
     "period": "Period of Tanzimat Reforms",
     "periodId": "tanzimat",
     "achievements": [
@@ -620,7 +693,7 @@ export const SULTANS = [
     "name": "Abdulmejid I",
     "reign": "1839-1861",
     "title": "The Modernizer",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/abdulmejid1.jpg",
     "period": "Tanzimat Era",
     "periodId": "tanzimat",
     "achievements": [
@@ -641,7 +714,7 @@ export const SULTANS = [
     "name": "Abdulaziz",
     "reign": "1861-1876",
     "title": "The Progressive Sultan",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/abdulaziz.jpg",
     "period": "Tanzimat Era",
     "periodId": "tanzimat",
     "achievements": [
@@ -662,7 +735,7 @@ export const SULTANS = [
     "name": "Murad V",
     "reign": "1876",
     "title": "The Brief Reformer",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/murad5.jpg",
     "period": "Late Tanzimat Period",
     "periodId": "late-tanzimat",
     "achievements": [
@@ -682,7 +755,7 @@ export const SULTANS = [
     "name": "Abdulhamid II",
     "reign": "1876-1909",
     "title": "The Red Sultan",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/abdulhamid2.jpg",
     "period": "Decline of Ottoman Empire",
     "periodId": "decline",
     "achievements": [
@@ -703,7 +776,7 @@ export const SULTANS = [
     "name": "Mehmed V",
     "reign": "1909-1918",
     "title": "The Symbolic Sultan",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/mehmed5.jpg",
     "period": "World War I",
     "periodId": "world-war-i",
     "achievements": [
@@ -724,7 +797,7 @@ export const SULTANS = [
     "name": "Mehmed VI",
     "reign": "1918-1922",
     "title": "The Last Sultan",
-    "image": "/api/placeholder/120/160",
+    "image": "/images/sultans/mehmed6.jpg",
     "period": "End of Ottoman Empire",
     "periodId": "end",
     "achievements": [
